@@ -1,12 +1,6 @@
-import Enzyme, { shallow } from 'enzyme';
-import EnzymeAdapter from '@wojtekmaj/enzyme-adapter-react-17';
-
+import { shallow } from 'enzyme';
 import { findByTestAttr } from '../__test__/testUtils';
 import Congrats from './Congrats';
-
-Enzyme.configure({
-  adapter: new EnzymeAdapter(),
-});
 
 interface setupProps {
   success: boolean;
@@ -33,7 +27,8 @@ describe('Congrats', () => {
     const component = findByTestAttr(wrapper, 'component-congrats');
     expect(component.text()).toBe('');
   });
-  test('renders non-empty congrats message when "success" prop i s true', () => {
+
+  test('renders non-empty congrats message when "success" prop is true', () => {
     const wrapper = setup({ success: true });
     const message = findByTestAttr(wrapper, 'congrats-message');
 
