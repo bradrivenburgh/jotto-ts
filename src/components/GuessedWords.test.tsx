@@ -6,7 +6,7 @@ const defaultProps = {
   guessedWords: [{ guessedWord: 'train', letterMatchCount: 3 }],
 };
 
-const setup = (props = defaultProps) => {
+const setup = (props = defaultProps): ShallowWrapper => {
   return shallow(<GuessedWords {...props} />);
 };
 
