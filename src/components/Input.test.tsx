@@ -1,10 +1,19 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { findByTestAttr } from '../__test__/testUtils';
 import Input from './Input';
 
-const defaultProps = { secretWord: 'party' };
+// Mock React.useState
+const mockSetCurrentGuess = jest.fn(); // mock setter function
+jest.mock('react', () => ({
+  //require the actual 'react' package
+  ...jest.requireActual('react'),
+  // override 'useState' method
+  useState: (initialState: any) => [initialState, mockSetCurrentGuess],
+}));
 
+// set default props and setup function returning a
+// shallow wrapper with them
+const defaultProps = { secretWord: 'party' };
 const setup = (props = defaultProps): ShallowWrapper => {
   return shallow(<Input {...props} />);
 };
@@ -17,10 +26,6 @@ test('renders without crashing', () => {
 
 describe('state controlled input field', () => {
   test('state updates with value of input box upon change', () => {
-    const mockSetCurrentGuess = jest.fn();
-    // Mock React.useState
-    React.useState = jest.fn(() => ['', mockSetCurrentGuess]);
-
     const wrapper = setup();
     const inputBox = findByTestAttr(wrapper, 'input-box');
 

@@ -1,11 +1,11 @@
-import React from 'react';
+import {useState} from 'react';
 
 interface InputProps {
   secretWord: string;
 }
 
 const Input: React.FC<InputProps> = ({ secretWord }) => {
-  const [currentGuess, setCurrentGuess] = React.useState('');
+  const [currentGuess, setCurrentGuess] = useState('');
 
   return (
     <div data-test='component-input'>
