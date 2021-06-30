@@ -1,16 +1,7 @@
+import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { findByTestAttr } from '../__test__/testUtils';
 import Input from './Input';
-
-// Mock React.useState
-const mockSetCurrentGuess = jest.fn(); // mock setter function
-
-jest.mock('react', () => ({
-  //require the actual 'react' package
-  ...jest.requireActual('react'),
-  // override 'useState' method
-  useState: (initialState: any) => [initialState, mockSetCurrentGuess],
-}));
 
 // set default props and setup function returning a
 // shallow wrapper with them
@@ -26,26 +17,32 @@ test('renders without crashing', () => {
 });
 
 describe('state controlled input field', () => {
+  let mockSetCurrentGuess = jest.fn();
   let wrapper: ShallowWrapper;
+  let originalUseState: any;
+
   beforeEach(() => {
     mockSetCurrentGuess.mockClear();
+    originalUseState = React.useState;
+    React.useState = jest.fn(() => ['', mockSetCurrentGuess]);
     wrapper = setup();
+  });
+  afterEach(() => {
+    React.useState = originalUseState;
   });
 
   test('state updates with value of input box upon change', () => {
-    // Find input
     const inputBox = findByTestAttr(wrapper, 'input-box');
-    // Simulate change event to "input-box" with value of "train"
+
     const mockEvent = { target: { value: 'train' } };
     inputBox.simulate('change', mockEvent);
 
     expect(mockSetCurrentGuess).toHaveBeenCalledWith('train');
   });
-
-  test('setCurrentGuess is called with an empty string onSubmit', () => {
+  test('field is cleared upon submit button click', () => {
     const submitButton = findByTestAttr(wrapper, 'submit-button');
-    submitButton.simulate('click');
 
+    submitButton.simulate('click', { preventDefault() {} });
     expect(mockSetCurrentGuess).toHaveBeenCalledWith('');
   });
 });
