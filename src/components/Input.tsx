@@ -7,7 +7,8 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({ secretWord }) => {
   const [currentGuess, setCurrentGuess] = React.useState('');
 
-  const onClick = () => {
+  const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setCurrentGuess(''); // Reset input
 
     // TODO: Update the guessedWords global state
@@ -30,7 +31,7 @@ const Input: React.FC<InputProps> = ({ secretWord }) => {
         <button
           data-test='submit-button'
           className='btn btn-primary mb-2'
-          onClick={onClick}>
+          onClick={(e) => onClick(e)}>
           Submit
         </button>
       </form>
