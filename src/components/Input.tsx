@@ -2,9 +2,10 @@ import React from 'react';
 
 interface InputProps {
   secretWord: string;
+  success: boolean;
 }
 
-const Input: React.FC<InputProps> = ({ secretWord }) => {
+const Input: React.FC<InputProps> = ({ secretWord, success }) => {
   const [currentGuess, setCurrentGuess] = React.useState('');
 
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -16,6 +17,10 @@ const Input: React.FC<InputProps> = ({ secretWord }) => {
     // TODO: Check against "secretWord" and optionally update "success"
     // global state
   };
+
+  if (success) {
+    return <div data-test='component-input' />;
+  }
 
   return (
     <div data-test='component-input'>

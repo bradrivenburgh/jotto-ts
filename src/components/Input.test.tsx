@@ -5,15 +5,50 @@ import Input from './Input';
 
 // set default props and setup function returning a
 // shallow wrapper with them
-const defaultProps = { secretWord: 'party' };
+const defaultProps = { success: false, secretWord: 'party' };
 const setup = (props = defaultProps): ShallowWrapper => {
   return shallow(<Input {...props} />);
 };
 
-test('renders without crashing', () => {
-  const wrapper = setup();
-  const component = findByTestAttr(wrapper, 'component-input');
-  expect(component.length).toBe(1);
+describe('render', () => {
+  describe('success is true', () => {
+    let wrapper: ShallowWrapper;
+    beforeEach(() => {
+      wrapper = setup({ ...defaultProps, success: true });
+    });
+
+    test('renders without crashing', () => {
+      const component = findByTestAttr(wrapper, 'component-input');
+      expect(component.length).toBe(1);
+    });
+    test('input box does not show', () => {
+      const inputBox = findByTestAttr(wrapper, 'input-box');
+      expect(inputBox.exists()).toBe(false);
+    });
+    test('submit button does not show', () => {
+      const submitButton = findByTestAttr(wrapper, 'submit-button');
+      expect(submitButton.exists()).toBe(false);
+    });
+  });
+  describe('success is false', () => {
+    let wrapper: ShallowWrapper;
+    beforeEach(() => {
+      wrapper = setup({ ...defaultProps, success: false });
+    });
+
+    test('renders without crashing', () => {
+      const component = findByTestAttr(wrapper, 'component-input');
+      expect(component.length).toBe(1);
+    });
+    test('input box shows', () => {
+      const inputBox = findByTestAttr(wrapper, 'input-box');
+      expect(inputBox.exists()).toBe(true);
+    });
+    test('submit button shows', () => {
+      const submitButton = findByTestAttr(wrapper, 'submit-button');
+      expect(submitButton.exists()).toBe(true);
+    });
+  });
 });
 
 describe('state controlled input field', () => {
